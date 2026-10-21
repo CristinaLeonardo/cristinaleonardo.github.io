@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cristina Leonardo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Cristina Leonardo, Dr. rer. nat. — product manager for complex AI products, and a lab of vibecoded AI projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: asymmetric editorial grid — a narrow mono label column beside wide content, like annotated lab notes. */
+:root {
+  --paper: #f6f7f4;        /* cool, faintly green off-white */
+  --surface: #ffffff;
+  --ink: #18221d;          /* forest-black */
+  --muted: #5d6a63;
+  --line: #dde2dc;
+  --green: #2f6b4f;        /* deep moss */
+  --green-soft: #e3eee7;
+  --violet: #6a4c9c;       /* muted amethyst */
+  --violet-soft: #ece6f5;
+
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.75rem;
+  --step-3: clamp(2.25rem, 5vw, 3.25rem);
+  --step-4: clamp(3rem, 9vw, 6.5rem);
+
+  --wrap: 72rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1512; --surface: #151d19; --ink: #e8ece8; --muted: #9aa8a0; --line: #26312b;
+    --green: #8cc4a3; --green-soft: #1a2a22; --violet: #b9a2e6; --violet-soft: #231d30;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1512; --surface: #151d19; --ink: #e8ece8; --muted: #9aa8a0; --line: #26312b;
+  --green: #8cc4a3; --green-soft: #1a2a22; --violet: #b9a2e6; --violet-soft: #231d30;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--violet-soft); color: var(--ink); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; border-radius: 2px; }
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 720px) {
+  .wrap { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); }
+}
+
+.label {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------- Header ---------- */
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper);
+}
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .wrap {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding-block: 14px;
+}
+.monogram {
+  font-family: var(--display); font-size: 1.35rem; font-weight: 500;
+  text-decoration: none; letter-spacing: -0.01em;
+}
+.monogram i { color: var(--violet); }
+.site-nav { display: flex; gap: clamp(14px, 3vw, 32px); }
+.site-nav a {
+  font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.06em;
+  text-transform: uppercase; text-decoration: none; color: var(--muted);
+  transition: color .2s;
+}
+.site-nav a:hover { color: var(--ink); }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+.hero .wrap {
+  position: relative; z-index: 1;
+  padding-block: clamp(64px, 12vw, 140px) clamp(56px, 9vw, 104px);
+  display: grid; gap: 28px;
+}
+#network {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 15%, #000 70%);
+          mask-image: linear-gradient(90deg, transparent 15%, #000 70%);
+}
+.hero h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-4);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.hero h1 .title {
+  display: block;
+  font-style: italic; font-weight: 400;
+  font-size: 0.42em; letter-spacing: 0;
+  color: var(--violet);
+  margin-top: 0.35em;
+}
+.hero .lede {
+  margin: 0; max-width: 36rem;
+  font-size: var(--step-1); line-height: 1.55; color: var(--muted);
+  text-wrap: pretty;
+}
+.hero .lede strong { color: var(--ink); font-weight: 600; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 8px; }
+.hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.btn {
+  font-size: var(--step--1); font-weight: 600; letter-spacing: 0.02em; text-decoration: none;
+  padding: 11px 22px; border-radius: 99px; border: 1px solid var(--line);
+  background: var(--paper); color: var(--ink);
+  transition: border-color .2s, background .2s, color .2s;
+}
+.btn:hover { border-color: var(--violet); color: var(--violet); }
+.btn.primary { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.btn.primary:hover { background: var(--violet); border-color: var(--violet); color: var(--paper); }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: inline-block; flex: none; }
+.dot.v { background: var(--violet); }
+
+/* ---------- Sections ---------- */
+section.block { border-bottom: 1px solid var(--line); }
+section.block > .wrap {
+  padding-block: clamp(64px, 10vw, 120px);
+  display: grid; gap: 32px;
+}
+@media (min-width: 900px) {
+  section.block > .wrap { grid-template-columns: 13rem minmax(0, 1fr); gap: 48px; }
+}
+.block-head { display: grid; gap: 10px; align-content: start; }
+@media (min-width: 900px) { .block-head { position: sticky; top: 96px; } }
+.block-head .count { font-family: var(--display); font-style: italic; font-size: var(--step-1); color: var(--green); }
+.block-body { min-width: 0; display: grid; gap: 40px; }
+.block-body h2 {
+  margin: 0; font-family: var(--display); font-weight: 400;
+  font-size: var(--step-3); line-height: 1.08; letter-spacing: -0.02em;
+  text-wrap: balance; max-width: 20ch;
+}
+.block-body h2 em { color: var(--violet); }
+.intro { margin: 0; max-width: 62ch; color: var(--muted); }
+
+/* ---------- Career timeline ---------- */
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; }
+.timeline li {
+  display: grid; gap: 6px 32px;
+  padding-block: 28px;
+  border-top: 1px solid var(--line);
+  position: relative;
+}
+.timeline li:last-child { border-bottom: 1px solid var(--line); }
+@media (min-width: 640px) { .timeline li { grid-template-columns: 9rem minmax(0, 1fr); } }
+.timeline .when {
+  font-family: var(--mono); font-size: var(--step--1); color: var(--muted);
+  font-variant-numeric: tabular-nums; padding-top: 6px;
+  display: flex; align-items: baseline; gap: 10px;
+}
+.timeline .what { min-width: 0; display: grid; gap: 6px; }
+.timeline h3 { margin: 0; font-family: var(--display); font-weight: 500; font-size: var(--step-2); line-height: 1.2; }
+.timeline .org { font-size: var(--step--1); font-weight: 600; letter-spacing: 0.02em; color: var(--green); }
+.timeline p { margin: 4px 0 0; max-width: 60ch; color: var(--muted); }
+.timeline .now h3::after {
+  content: "Now"; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+  vertical-align: middle; margin-left: 12px; padding: 3px 8px; border-radius: 99px;
+  background: var(--violet-soft); color: var(--violet); font-weight: 500;
+}
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.02em;
+  padding: 3px 9px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted);
+}
+
+.figures { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 760px) { .figures { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.figures div { background: var(--paper); padding: 20px 16px 20px 0; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.figures b { font-family: var(--display); font-weight: 400; font-size: var(--step-2); line-height: 1.1; color: var(--green); font-variant-numeric: tabular-nums; }
+.figures span { font-size: var(--step--1); color: var(--muted); line-height: 1.45; }
+
+.pubs { display: grid; gap: 14px; }
+.pubs ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.pubs li { display: grid; gap: 2px; padding-left: 16px; border-left: 2px solid var(--violet-soft); max-width: 62ch; }
+.pubs cite { font-family: var(--display); font-style: italic; font-size: 1.05rem; line-height: 1.4; }
+.pubs li span { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+
+/* Text still to personalise: shows as a dotted underline so it's easy to spot. */
+.todo { text-decoration: underline dotted var(--violet); text-underline-offset: 4px; }
+
+.principles { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+@media (min-width: 640px) { .principles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.principles div { background: var(--paper); padding: 24px; display: grid; gap: 8px; align-content: start; }
+.principles b { font-family: var(--display); font-weight: 500; font-size: var(--step-1); }
+.principles p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+/* ---------- Projects ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.filters button {
+  font: inherit; font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.04em;
+  padding: 6px 14px; border-radius: 99px; cursor: pointer;
+  border: 1px solid var(--line); background: transparent; color: var(--muted);
+  transition: border-color .2s, color .2s, background .2s;
+}
+.filters button:hover { color: var(--ink); border-color: var(--muted); }
+.filters button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+.projects { display: grid; gap: 20px; }
+@media (min-width: 760px) { .projects { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.project {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 28px;
+  display: grid; grid-template-rows: auto auto 1fr auto; gap: 14px;
+  min-width: 0;
+  transition: border-color .25s, transform .25s;
+}
+.project:hover { border-color: var(--green); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .project, .project:hover { transition: none; transform: none; } }
+.project-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.status { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.status.live .dot { background: var(--green); }
+.status.wip .dot { background: var(--violet); }
+.project h3 { margin: 0; font-family: var(--display); font-weight: 500; font-size: var(--step-2); line-height: 1.15; }
+.project p { margin: 0; color: var(--muted); }
+.spec {
+  margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 16px;
+  padding-top: 14px; border-top: 1px dashed var(--line);
+  font-family: var(--mono); font-size: 0.75rem;
+}
+.spec dt { color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.spec dd { margin: 0; overflow-wrap: anywhere; }
+.project-links { display: flex; gap: 18px; flex-wrap: wrap; }
+.project-links a {
+  font-size: var(--step--1); font-weight: 600; text-decoration: none; color: var(--green);
+  border-bottom: 1px solid currentColor; padding-bottom: 1px;
+}
+.project-links a:hover { color: var(--violet); }
+
+.project.slot {
+  background: transparent; border-style: dashed;
+  grid-template-rows: auto; align-content: center; text-align: left;
+}
+.project.slot:hover { transform: none; border-color: var(--violet); }
+.project.slot h3 { font-style: italic; color: var(--violet); }
+
+/* ---------- Contact ---------- */
+.contact-grid { display: grid; gap: 0; border-top: 1px solid var(--ink); }
+.contact-row {
+  display: grid; gap: 4px 24px; padding-block: 20px; border-bottom: 1px solid var(--line);
+  align-items: baseline;
+}
+@media (min-width: 640px) { .contact-row { grid-template-columns: 10rem minmax(0, 1fr) auto; } }
+.contact-row .value { font-family: var(--display); font-size: var(--step-1); min-width: 0; overflow-wrap: anywhere; }
+.contact-row .value a { text-decoration: none; border-bottom: 1px solid var(--line); transition: border-color .2s; }
+.contact-row .value a:hover { border-color: var(--violet); }
+.copy {
+  font: inherit; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+  background: transparent; border: 1px solid var(--line); color: var(--muted);
+  padding: 6px 12px; border-radius: 99px; cursor: pointer; justify-self: start;
+}
+.copy:hover { color: var(--ink); border-color: var(--muted); }
+
+footer .wrap {
+  padding-block: 40px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+}
+footer .label i { font-family: var(--display); text-transform: none; letter-spacing: 0; font-size: 0.95rem; color: var(--violet); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="monogram" href="#top">C<i>L</i></a>
+    <nav class="site-nav" aria-label="Sections">
+      <a href="#career">Career</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <canvas id="network" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <span class="label">Product Management · AI/ML · Healthcare &amp; Biopharma</span>
+      <h1>Cristina Leonardo<span class="title">Dr. rer. nat.</span></h1>
+      <p class="lede">I lead <strong>complex, regulated products built on AI</strong>, from machine-learning diagnostics to integrated hardware and software for biopharma. A physicist by training with 8+ years across research and product, I turn deep science into products clinicians and labs rely on. On the side, I ship my own ideas with vibecoding.</p>
+      <div class="hero-meta label">
+        <span><i class="dot"></i>Technical product manager</span>
+        <span><i class="dot v"></i>PhD in Physics, LMU &amp; Max Planck</span>
+        <span><i class="dot"></i>Builder of AI side projects</span>
+      </div>
+      <div class="hero-actions">
+        <a class="btn primary" href="Cristina_Leonardo_Resume.pdf" target="_blank" rel="noopener">Resume (PDF) ↗</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CAREER ================= -->
+  <section class="block" id="career">
+    <div class="wrap">
+      <div class="block-head">
+        <span class="label">01 — Career</span>
+        <span class="count">Lab bench to roadmap</span>
+      </div>
+      <div class="block-body">
+        <h2>A scientist's method, applied to <em>products</em>.</h2>
+        <p class="intro">My path runs from building machine-learning models on spectroscopic data at the Max Planck Institute, through a postdoc at Berkeley, to leading AI/ML-enabled and regulated products in diagnostics and biopharma. Research taught me to form hypotheses, design experiments and stay honest about evidence. That is what complex AI products need most: clear requirements, rigorous verification and validation, and the judgment to know when a model is ready for real users.</p>
+
+        <div class="figures">
+          <div><b>8+</b><span>years across AI/ML and complex HW/SW products</span></div>
+          <div><b>&gt;120%</b><span>year-on-year growth in software feature output at CLADE</span></div>
+          <div><b>4,000+</b><span>person cohort behind my ML disease-detection research</span></div>
+          <div><b>ISO&nbsp;13485</b><span>certification enabled at iLoF</span></div>
+        </div>
+
+        <!-- Newest first. Add class="now" to roles you currently hold. -->
+        <ol class="timeline">
+          <li class="now">
+            <div class="when">May 2026 – today</div>
+            <div class="what">
+              <h3>Lead Product Manager</h3>
+              <span class="org">expressTEC · Faro, Portugal · Part-time consultant</span>
+              <p>Leading a software-enabled, PCR-based molecular diagnostics platform for precision oncology. I own the product strategy, intended use and requirements for a cloud platform that gives clinicians biomarker interpretation and therapy-support insights, built within an IVDR-compliant design-control framework.</p>
+              <div class="tags"><span class="tag">Precision oncology</span><span class="tag">Cloud platform</span><span class="tag">IVDR</span><span class="tag">Product strategy</span></div>
+            </div>
+          </li>
+          <li class="now">
+            <div class="when">Mar 2025 – today</div>
+            <div class="what">
+              <h3>Product Manager</h3>
+              <span class="org">CLADE · Esslingen am Neckar, Germany</span>
+              <p>Own the roadmap and full lifecycle of integrated hardware/software GMP products for biopharmaceutical manufacturing, as product manager, product owner and project manager in one. Leading the design of a next-generation analytical platform, launched a new product while retiring the previous generation, and grew software feature output by more than 120% year on year.</p>
+              <div class="tags"><span class="tag">HW/SW products</span><span class="tag">GMP</span><span class="tag">Product ownership</span><span class="tag">Launch &amp; end-of-life</span></div>
+            </div>
+          </li>
+          <li>
+            <div class="when">Oct 2023 – Feb 2025</div>
+            <div class="what">
+              <h3>Product Manager</h3>
+              <span class="org">iLoF · Porto, Portugal</span>
+              <p>Led AI/ML-enabled diagnostic (IVD) products that combine photonics, machine learning and clinical data for early detection of Alzheimer's disease and cancer. Led data science and biology teams building the detection algorithms, and enabled the company's ISO 13485 certification and its regulatory strategy for software as an IVD.</p>
+              <div class="tags"><span class="tag">AI/ML diagnostics</span><span class="tag">Photonics</span><span class="tag">ISO 13485</span><span class="tag">Software as IVD</span></div>
+            </div>
+          </li>
+          <li>
+            <div class="when">Nov 2021 – Oct 2023</div>
+            <div class="what">
+              <h3>Postdoctoral Fellow in Chemistry</h3>
+              <span class="org">Lawrence Berkeley National Laboratory &amp; UC Berkeley · California</span>
+              <p>Developed optical spectroscopy instruments and computational analysis to uncover biomolecular dynamics in photosynthetic systems. Built Python and MATLAB pipelines with ML-supported analysis, and led projects through to first-author publications.</p>
+              <div class="tags"><span class="tag">Spectroscopy</span><span class="tag">Python &amp; MATLAB</span><span class="tag">Research leadership</span></div>
+            </div>
+          </li>
+          <li>
+            <div class="when">2017 – 2021</div>
+            <div class="what">
+              <h3>PhD in Physics, Dr. rer. nat.</h3>
+              <span class="org">Max Planck Institute of Quantum Optics &amp; LMU · Munich, Germany</span>
+              <p>Developed spectroscopy and machine-learning methods to detect disease from human blood, in the personalized-medicine research environment of Nobel laureate Prof. Ferenc Krausz. Built supervised and unsupervised models on data from a cohort of more than 4,000 people.</p>
+              <div class="tags"><span class="tag">Machine learning</span><span class="tag">Biomedical data</span><span class="tag">Personalized medicine</span></div>
+            </div>
+          </li>
+          <li>
+            <div class="when">2013 – 2015</div>
+            <div class="what">
+              <h3>MSc in Chemistry</h3>
+              <span class="org">Università degli Studi di Padova · Padua, Italy</span>
+              <p>Advanced spectroscopy and computational analysis of biomolecular dynamics.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="pubs">
+          <span class="label">Selected publications</span>
+          <ul>
+            <li><cite>Plasma infrared fingerprinting with machine learning enables single-measurement multi-phenotype health screening.</cite><span>Cell Reports Medicine, 2024 · Second author</span></li>
+            <li><cite>Bidirectional energy flow in the photosystem II supercomplex.</cite><span>J. Phys. Chem. B, 2024 · First author</span></li>
+            <li><cite>Infrared signatures of phycobilins within the phycocyanin 645 complex.</cite><span>J. Phys. Chem. B, 2023 · First author</span></li>
+            <li><cite>Molecular origin of blood-based infrared spectroscopic fingerprints.</cite><span>Angewandte Chemie, 2021 · Second author, featured on the cover</span></li>
+          </ul>
+        </div>
+
+        <div class="principles">
+          <div><b>Hypothesis first</b><p>Every feature starts as a testable bet with a metric that can prove it wrong.</p></div>
+          <div><b>Evidence over hype</b><p>Evaluations, error analysis and user research decide what an AI feature is ready for.</p></div>
+          <div><b>Build to learn</b><p>Vibecoding lets me prototype ideas in hours and put something real in front of people.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROJECTS ================= -->
+  <section class="block" id="projects">
+    <div class="wrap">
+      <div class="block-head">
+        <span class="label">02 — Side projects</span>
+        <span class="count" id="project-count"></span>
+      </div>
+      <div class="block-body">
+        <h2>The lab: projects <em>vibecoded</em> with AI.</h2>
+        <p class="intro">Personal experiments built end to end with AI coding tools. Each one records what it is, what it was built with and how long it took, so you can see the process as well as the result.</p>
+        <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
+        <div class="projects" id="project-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section class="block" id="contact">
+    <div class="wrap">
+      <div class="block-head">
+        <span class="label">03 — Contact</span>
+        <span class="count">Let's talk AI products</span>
+      </div>
+      <div class="block-body">
+        <h2>Open to conversations about <em>AI products</em>.</h2>
+        <p class="intro">Product roles, advisory work, speaking, or comparing notes on building with AI. Reach out through any of these.</p>
+        <div class="contact-grid">
+          <div class="contact-row">
+            <span class="label">Email</span>
+            <span class="value" id="email"><a href="mailto:cristina.leonardo1991@gmail.com">cristina.leonardo1991@gmail.com</a></span>
+            <button class="copy" id="copy-email" type="button">Copy</button>
+          </div>
+          <div class="contact-row">
+            <span class="label">Resume</span>
+            <span class="value"><a href="Cristina_Leonardo_Resume.pdf" target="_blank" rel="noopener">Cristina_Leonardo_Resume.pdf</a></span>
+          </div>
+          <div class="contact-row">
+            <span class="label">LinkedIn</span>
+            <span class="value"><a href="https://www.linkedin.com/in/cristinaleonardo/" target="_blank" rel="noopener">linkedin.com/in/cristinaleonardo</a></span>
+          </div>
+          <div class="contact-row">
+            <span class="label">Working in</span>
+            <span class="value">Germany &amp; Portugal</span>
+          </div>
+          <div class="contact-row">
+            <span class="label">Languages</span>
+            <span class="value">Italian (native) · English (C1) · German (B1) · Portuguese (A2) · Spanish (A1)</span>
+          </div>
+          <div class="contact-row">
+            <span class="label">Focus</span>
+            <span class="value">AI/ML-enabled products · Molecular diagnostics &amp; precision oncology · Regulated HW/SW (IVDR, GMP, ISO 13485)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="label">© <span id="year">2026</span> Cristina Leonardo, Dr. rer. nat.</span>
+    <span class="label">Vibecoded with <i>Claude Code</i></span>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   PROJECTS — add a new vibecoded project by copying one object below.
+   status: "live" or "wip"
+   ===================================================================== */
+const PROJECTS = [
+  {
+    title: "This portfolio",
+    status: "live",
+    year: 2026,
+    category: "Web",
+    summary: "My personal site, designed and coded in one conversation with an AI coding agent. The project catalogue is a small data list, so adding a new experiment takes a minute.",
+    builtWith: "Claude Code",
+    stack: "HTML · CSS · vanilla JS",
+    time: "1 session",
+    links: []
+  }
+  // {
+  //   title: "Project name",
+  //   status: "wip",
+  //   year: 2026,
+  //   category: "Agent",          // used for the filter buttons
+  //   summary: "What it does and the problem it solves.",
+  //   builtWith: "Claude Code",
+  //   stack: "Python · FastAPI · Claude API",
+  //   time: "2 weekends",
+  //   links: [{ label: "Live demo", href: "https://..." }, { label: "Code", href: "https://github.com/..." }]
+  // },
+];
+
+const listEl = document.getElementById("project-list");
+const filtersEl = document.getElementById("filters");
+const countEl = document.getElementById("project-count");
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function renderProjects(filter) {
+  const items = PROJECTS.filter(p => filter === "All" || p.category === filter);
+  listEl.innerHTML = items.map(p => `
+    <article class="project">
+      <div class="project-top">
+        <span class="status ${p.status === "live" ? "live" : "wip"}"><i class="dot"></i>${p.status === "live" ? "Live" : "In progress"}</span>
+        <span class="label">${esc(p.year)}</span>
+      </div>
+      <h3>${esc(p.title)}</h3>
+      <p>${esc(p.summary)}</p>
+      <dl class="spec">
+        <dt>Built with</dt><dd>${esc(p.builtWith)}</dd>
+        <dt>Stack</dt><dd>${esc(p.stack)}</dd>
+        <dt>Build time</dt><dd>${esc(p.time)}</dd>
+      </dl>
+      ${p.links && p.links.length ? `<div class="project-links">${p.links.map(l => `<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}</div>` : ""}
+    </article>`).join("") + `
+    <article class="project slot">
+      <span class="label">Next experiment</span>
+      <h3>In the works.</h3>
+      <p>New AI-built projects land here as they ship.</p>
+    </article>`;
+}
+
+function renderFilters() {
+  const cats = ["All", ...new Set(PROJECTS.map(p => p.category))];
+  filtersEl.hidden = cats.length <= 2;
+  filtersEl.innerHTML = cats.map((c, i) => `<button type="button" aria-pressed="${i === 0}" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
+  filtersEl.addEventListener("click", e => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    filtersEl.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b === btn));
+    renderProjects(btn.dataset.cat);
+  });
+}
+
+const n = PROJECTS.length;
+countEl.textContent = `${n} ${n === 1 ? "project" : "projects"} shipped`;
+renderFilters();
+renderProjects("All");
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* Copy email */
+document.getElementById("copy-email").addEventListener("click", e => {
+  const btn = e.currentTarget;
+  const text = document.getElementById("email").textContent.trim();
+  const done = () => { btn.textContent = "Copied"; setTimeout(() => (btn.textContent = "Copy"), 1600); };
+  const fallback = () => {
+    const r = document.createRange();
+    r.selectNodeContents(document.getElementById("email"));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    btn.textContent = "Selected";
+  };
+  try { navigator.clipboard.writeText(text).then(done, fallback); } catch (_) { fallback(); }
+});
+
+/* Hero: a quiet neural-network field in the two brand colors. */
+(function network() {
+  const canvas = document.getElementById("network");
+  const ctx = canvas.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let w, h, nodes = [], colors = {};
+
+  function readColors() {
+    const cs = getComputedStyle(document.documentElement);
+    colors.green = cs.getPropertyValue("--green").trim();
+    colors.violet = cs.getPropertyValue("--violet").trim();
+  }
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    w = canvas.clientWidth; h = canvas.clientHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.round(Math.min(56, Math.max(18, w * h / 16000)));
+    nodes = Array.from({ length: count }, (_, i) => ({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.18, vy: (Math.random() - 0.5) * 0.18,
+      r: Math.random() * 1.6 + 1.2, v: i % 5 === 0
+    }));
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    const max = 140;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < max) {
+          ctx.globalAlpha = (1 - d / max) * 0.35;
+          ctx.strokeStyle = a.v || b.v ? colors.violet : colors.green;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+    }
+    for (const p of nodes) {
+      ctx.globalAlpha = p.v ? 0.9 : 0.6;
+      ctx.fillStyle = p.v ? colors.violet : colors.green;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.v ? p.r + 0.8 : p.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  function step() {
+    for (const p of nodes) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+    }
+    draw();
+    requestAnimationFrame(step);
+  }
+  readColors(); resize();
+  addEventListener("resize", () => { resize(); if (reduce) draw(); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { readColors(); if (reduce) draw(); });
+  new MutationObserver(() => { readColors(); if (reduce) draw(); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  reduce ? draw() : step();
+})();
+</script>
+</body>
+</html>
