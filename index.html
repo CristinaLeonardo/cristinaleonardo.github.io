@@ -124,6 +124,19 @@ body::before {
   -webkit-mask-image: linear-gradient(90deg, transparent 15%, #000 70%);
           mask-image: linear-gradient(90deg, transparent 15%, #000 70%);
 }
+.hero-text { display: grid; gap: 28px; min-width: 0; }
+.portrait {
+  margin: 0; order: -1; justify-self: start;
+  width: clamp(132px, 36vw, 190px); max-width: 100%; aspect-ratio: 1;
+  border-radius: 50%; overflow: hidden;
+  background: var(--green-soft);
+  box-shadow: 0 0 0 6px var(--paper), 0 0 0 7px color-mix(in srgb, var(--violet) 40%, transparent);
+}
+.portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; }
+@media (min-width: 900px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: clamp(40px, 6vw, 88px); }
+  .portrait { order: 0; width: clamp(230px, 24vw, 300px); }
+}
 .hero h1 {
   margin: 0;
   font-family: var(--display);
@@ -182,50 +195,143 @@ section.block > .wrap {
 .block-body h2 em { color: var(--violet); }
 .intro { margin: 0; max-width: 62ch; color: var(--muted); }
 
-/* ---------- Career timeline ---------- */
-.timeline { list-style: none; margin: 0; padding: 0; display: grid; }
-.timeline li {
-  display: grid; gap: 6px 32px;
-  padding-block: 28px;
-  border-top: 1px solid var(--line);
+/* ---------- Career journey ---------- */
+#career .block-head { position: static; }
+.journey-intro {
+  margin: 0; max-width: 58ch;
+  font-family: var(--display); font-style: italic; font-size: var(--step-1); line-height: 1.5;
+  text-wrap: pretty;
+}
+.journey-full { grid-column: 1 / -1; min-width: 0; display: grid; gap: clamp(36px, 5vw, 64px); }
+
+/* Illustration: its own variables mapped to the site palette (--ink, --muted, --paper inherit by name). */
+.cj-art { display: block; width: 100%; max-width: 100%; height: auto; --accent: var(--green); --soft: var(--green-soft); --warm: var(--violet); }
+.cj-art .ink { stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+.cj-art .fill-ink { fill: var(--ink); }
+.cj-art .accent { stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+.cj-art .fill-accent { fill: var(--accent); }
+.cj-art .soft { fill: var(--soft); }
+.cj-art .warm { fill: var(--warm); }
+.cj-art .paper { fill: var(--paper); }
+.cj-art .cj-label { font: 500 22px var(--display); fill: var(--ink); text-anchor: middle; }
+.cj-art .cj-sub { font: 400 12.5px var(--mono); letter-spacing: 0.04em; fill: var(--muted); text-anchor: middle; }
+.cj-art .thread { stroke: var(--accent); stroke-width: 2; fill: none; stroke-dasharray: 6 7; opacity: .7; }
+/* The left-to-right reveal is driven by scrolling in assets/journey.js. */
+.cj-art .ground { stroke: var(--muted); stroke-width: 2; fill: none; stroke-dasharray: 1400; stroke-dashoffset: 0; }
+.cj-art .pulse { transform-box: fill-box; transform-origin: center; animation: cj-pulse 2.4s ease-in-out 3s infinite; }
+@keyframes cj-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.35); opacity: .55; } }
+@media (max-width: 640px) {
+  .cj-art .cj-label { font-size: 38px; }
+  .cj-art .cj-sub { display: none; }
+}
+
+/* The path: vertical on small screens, a gently rising curve on wide ones. */
+.journey-track { position: relative; }
+.journey-path { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.journey-path .track { fill: none; stroke: var(--line); stroke-width: 2; }
+.journey-path .fill { fill: none; stroke: url(#journey-grad); stroke-width: 3; stroke-linecap: round; }
+.journey-path .g-start { stop-color: color-mix(in srgb, var(--green) 45%, var(--muted)); }
+.journey-path .g-mid { stop-color: var(--green); }
+.journey-path .g-end { stop-color: var(--violet); }
+
+.journey { list-style: none; margin: 0; padding: 0; display: grid; gap: 44px; }
+.stop {
   position: relative;
+  display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 0 20px; align-items: start;
+  transition: opacity .6s ease, transform .6s ease;
 }
-.timeline li:last-child { border-bottom: 1px solid var(--line); }
-@media (min-width: 640px) { .timeline li { grid-template-columns: 9rem minmax(0, 1fr); } }
-.timeline .when {
-  font-family: var(--mono); font-size: var(--step--1); color: var(--muted);
-  font-variant-numeric: tabular-nums; padding-top: 6px;
-  display: flex; align-items: baseline; gap: 10px;
+.stop.pending { opacity: 0; transform: translateY(18px); }
+.node {
+  position: relative; z-index: 1;
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--paper); color: var(--tone); border: 2px solid var(--tone);
+  transition: background .5s ease, color .5s ease;
 }
-.timeline .what { min-width: 0; display: grid; gap: 6px; }
-.timeline h3 { margin: 0; font-family: var(--display); font-weight: 500; font-size: var(--step-2); line-height: 1.2; }
-.timeline .org { font-size: var(--step--1); font-weight: 600; letter-spacing: 0.02em; color: var(--green); }
-.timeline p { margin: 4px 0 0; max-width: 60ch; color: var(--muted); }
-.timeline .now h3::after {
-  content: "Now"; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
-  vertical-align: middle; margin-left: 12px; padding: 3px 8px; border-radius: 99px;
-  background: var(--violet-soft); color: var(--violet); font-weight: 500;
+.node svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.stop.reached .node { background: var(--tone); color: var(--paper); }
+.milestone .node { width: 18px; height: 18px; justify-self: center; margin-top: 13px; }
+.now .node::after {
+  content: ""; position: absolute; inset: -8px; border-radius: 50%;
+  border: 2px solid var(--tone); opacity: 0;
+  animation: journey-ring 2.8s ease-out infinite;
 }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.tag {
-  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.02em;
-  padding: 3px 9px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted);
+@keyframes journey-ring { 0% { transform: scale(.8); opacity: .6; } 100% { transform: scale(1.3); opacity: 0; } }
+
+.chapter { min-width: 0; display: grid; gap: 10px; align-content: start; }
+.chapter-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 44px; }
+.lens, .now-badge {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 99px; white-space: nowrap;
+}
+.lens {
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tone) 35%, transparent);
+}
+.now-badge { color: var(--paper); background: var(--violet); }
+.chapter h3 { margin: 0; font-family: var(--display); font-weight: 500; font-size: var(--step-2); line-height: 1.15; text-wrap: balance; }
+.chapter h3 small { display: block; margin-top: 6px; font-family: var(--body); font-size: 0.95rem; font-weight: 500; line-height: 1.4; color: var(--muted); }
+.where { margin: 0; font-family: var(--mono); font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.where b { font-weight: 500; color: var(--ink); }
+.question {
+  margin: 4px 0; font-family: var(--display); font-style: italic; font-weight: 400;
+  font-size: 1.3rem; line-height: 1.35; color: var(--tone); text-wrap: balance;
+}
+.summary { margin: 0; color: var(--muted); font-size: 0.93rem; line-height: 1.6; text-wrap: pretty; }
+.more {
+  justify-self: start; display: inline-flex; align-items: center; gap: 8px;
+  font: inherit; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid var(--line);
+  padding: 6px 0; cursor: pointer; transition: border-color .2s;
+}
+.more::after { content: "+"; font-size: 0.95rem; line-height: 1; color: var(--tone); }
+.more[aria-expanded="true"]::after { content: "−"; }
+.more:hover { border-color: var(--tone); }
+.details { display: grid; gap: 14px; padding-top: 2px; }
+.details[hidden] { display: none; }
+.details h4 { margin: 0 0 4px; font-size: var(--step--1); font-weight: 600; line-height: 1.4; }
+.details ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+.cta {
+  justify-self: start; margin-top: 4px;
+  font-size: var(--step--1); font-weight: 600; text-decoration: none; color: var(--tone);
+  border-bottom: 1px solid currentColor; padding-bottom: 1px;
+}
+.cta:hover { color: var(--ink); }
+.milestone .chapter h3 { font-size: var(--step-1); }
+.milestone .summary { font-family: var(--display); font-style: italic; font-size: 1.05rem; line-height: 1.45; color: var(--ink); }
+.detail-link {
+  display: inline-block; margin-top: 8px;
+  font-size: var(--step--1); font-weight: 600; text-decoration: none; color: var(--tone);
+  border-bottom: 1px solid currentColor; padding-bottom: 1px;
+}
+.detail-link:hover { color: var(--ink); }
+
+.journey-foot {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+  padding-block: 24px; border-block: 1px solid var(--line);
 }
 
-.figures { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); grid-template-columns: repeat(2, minmax(0, 1fr)); }
-@media (min-width: 760px) { .figures { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.figures div { background: var(--paper); padding: 20px 16px 20px 0; display: grid; gap: 6px; align-content: start; min-width: 0; }
-.figures b { font-family: var(--display); font-weight: 400; font-size: var(--step-2); line-height: 1.1; color: var(--green); font-variant-numeric: tabular-nums; }
-.figures span { font-size: var(--step--1); color: var(--muted); line-height: 1.45; }
+@media (min-width: 1180px) {
+  .journey { display: flex; align-items: flex-start; gap: 28px; }
+  .stop {
+    flex: 1 1 0; min-width: 0;
+    grid-template-columns: minmax(0, 1fr); gap: 20px;
+    padding-top: var(--lift, 0px);
+  }
+  .stop.milestone { flex: 0.62 1 0; }
+  .milestone .node { justify-self: start; margin: 13px 0 13px 13px; }
+  .chapter-meta { min-height: 0; }
+  .chapter h3 { font-size: 1.5rem; }
+  .question { font-size: 1.15rem; }
+}
 
-.pubs { display: grid; gap: 14px; }
-.pubs ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-.pubs li { display: grid; gap: 2px; padding-left: 16px; border-left: 2px solid var(--violet-soft); max-width: 62ch; }
-.pubs cite { font-family: var(--display); font-style: italic; font-size: 1.05rem; line-height: 1.4; }
-.pubs li span { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
-
-/* Text still to personalise: shows as a dotted underline so it's easy to spot. */
-.todo { text-decoration: underline dotted var(--violet); text-underline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .stop, .node { transition: none; }
+  .stop.pending { opacity: 1; transform: none; }
+  .now .node::after { animation: none; opacity: .3; transform: none; }
+  .cj-art .pulse { animation: none; }
+}
 
 .principles { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
 @media (min-width: 640px) { .principles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -314,7 +420,7 @@ footer .label i { font-family: var(--display); text-transform: none; letter-spac
   <div class="wrap">
     <a class="monogram" href="#top">C<i>L</i></a>
     <nav class="site-nav" aria-label="Sections">
-      <a href="#career">Career</a>
+      <a href="#career">Journey</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -325,104 +431,173 @@ footer .label i { font-family: var(--display); text-transform: none; letter-spac
   <section class="hero">
     <canvas id="network" aria-hidden="true"></canvas>
     <div class="wrap">
-      <span class="label">Product Management · AI/ML · Healthcare &amp; Biopharma</span>
-      <h1>Cristina Leonardo<span class="title">Dr. rer. nat.</span></h1>
-      <p class="lede">I lead <strong>complex, regulated products built on AI</strong>, from machine-learning diagnostics to integrated hardware and software for biopharma. A physicist by training with 8+ years across research and product, I turn deep science into products clinicians and labs rely on. On the side, I ship my own ideas with vibecoding.</p>
-      <div class="hero-meta label">
-        <span><i class="dot"></i>Technical product manager</span>
-        <span><i class="dot v"></i>PhD in Physics, LMU &amp; Max Planck</span>
-        <span><i class="dot"></i>Builder of AI side projects</span>
+      <div class="hero-text">
+        <span class="label">Product Management · AI/ML · Healthcare &amp; Biopharma</span>
+        <h1>Cristina Leonardo<span class="title">Dr. rer. nat.</span></h1>
+        <p class="lede">I lead <strong>complex, regulated products built on AI</strong>, from machine-learning diagnostics to integrated hardware and software for biopharma. A scientist by training with 8+ years across research and product, I turn deep science into products clinicians and labs rely on. On the side, I ship my own ideas with vibecoding.</p>
+        <div class="hero-meta label">
+          <span><i class="dot"></i>Product manager</span>
+          <span><i class="dot v"></i>PhD in Physics, LMU &amp; Max Planck</span>
+          <span><i class="dot"></i>Builder of AI side projects</span>
+        </div>
+        <div class="hero-actions">
+          <a class="btn primary" href="Cristina_Leonardo_Resume.pdf" target="_blank" rel="noopener">Resume (PDF) ↗</a>
+          <a class="btn" href="#contact">Get in touch</a>
+        </div>
       </div>
-      <div class="hero-actions">
-        <a class="btn primary" href="Cristina_Leonardo_Resume.pdf" target="_blank" rel="noopener">Resume (PDF) ↗</a>
-        <a class="btn" href="#contact">Get in touch</a>
-      </div>
+      <figure class="portrait">
+        <img src="assets/cristina-leonardo.jpg" width="727" height="900" alt="Portrait of Cristina Leonardo">
+      </figure>
     </div>
   </section>
 
-  <!-- ================= CAREER ================= -->
+  <!-- ================= CAREER JOURNEY ================= -->
+  <!-- Chapters are rendered from assets/career-data.js -->
   <section class="block" id="career">
     <div class="wrap">
       <div class="block-head">
-        <span class="label">01 — Career</span>
-        <span class="count">Lab bench to roadmap</span>
+        <span class="label">01 — Career journey</span>
+        <span class="count">Scientist to lead PM</span>
       </div>
       <div class="block-body">
-        <h2>A scientist's method, applied to <em>products</em>.</h2>
-        <p class="intro">My path runs from building machine-learning models on spectroscopic data at the Max Planck Institute, through a postdoc at Berkeley, to leading AI/ML-enabled and regulated products in diagnostics and biopharma. Research taught me to form hypotheses, design experiments and stay honest about evidence. That is what complex AI products need most: clear requirements, rigorous verification and validation, and the judgment to know when a model is ready for real users.</p>
+        <h2>A journey to make an <em>impact</em>.</h2>
+        <p class="journey-intro">Same question, different lens: from building ML models on diagnostic data, to building and owning products around them. Using data to solve hard health questions and deliver products that make an impact.</p>
+      </div>
+      <div class="journey-full">
+        <svg class="cj-art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 430" role="img" aria-labelledby="cj-title cj-desc">
+          <title id="cj-title">Career journey illustration</title>
+          <defs><clipPath id="cj-reveal"><rect x="0" y="0" width="1200" height="430"/></clipPath></defs>
+        <desc id="cj-desc">A young scientist examining a spectrum with a magnifying glass grows, step by step, into a product builder sketching a device, a product manager running a product lifecycle, and finally a lead product person surrounded by an AI network, creating impact for people.</desc>
 
-        <div class="figures">
-          <div><b>8+</b><span>years across AI/ML and complex HW/SW products</span></div>
-          <div><b>&gt;120%</b><span>year-on-year growth in software feature output at CLADE</span></div>
-          <div><b>4,000+</b><span>person cohort behind my ML disease-detection research</span></div>
-          <div><b>ISO&nbsp;13485</b><span>certification enabled at iLoF</span></div>
+          <!-- The rising ground: growth over time -->
+          <path class="ground" d="M30,365 C250,365 300,350 450,345 S750,332 850,322 S1050,298 1170,290"/>
+
+          <!-- The common thread: same question, different lens -->
+          <path class="thread" clip-path="url(#cj-reveal)" d="M300,228 C420,150 560,150 640,175 S820,150 900,140 S1000,95 1040,98"/>
+
+          <!-- ============ Stage 1: the curious scientist ============ -->
+          <g class="stage s1">
+            <!-- spectrum + data -->
+            <path class="accent" d="M215,270 C235,270 240,215 255,215 S270,262 282,262 S292,232 302,232 S312,268 330,268"/>
+            <line class="ink" x1="212" y1="272" x2="335" y2="272" opacity=".35"/>
+            <circle class="fill-accent" cx="230" cy="200" r="3"/><circle class="fill-accent" cx="246" cy="190" r="2.5"/>
+            <circle class="fill-accent" cx="265" cy="196" r="3.5"/><circle class="fill-accent" cx="285" cy="184" r="2.5"/>
+            <circle class="fill-accent" cx="300" cy="200" r="3"/><circle class="fill-accent" cx="318" cy="190" r="2"/>
+            <!-- flask -->
+            <path class="ink" d="M95,365 l0,-5 M88,300 h14 M91,300 v22 l-14,30 q-2,6 5,6 h26 q7,0 5,-6 l-14,-30 v-22"/>
+            <path class="soft" d="M84,345 l-5,10 q-1,4 4,4 h24 q5,0 4,-4 l-5,-10 z"/>
+            <g transform="translate(170,364) scale(.8)">
+              <line class="ink" x1="-8" y1="-50" x2="-11" y2="0"/><line class="ink" x1="8" y1="-50" x2="11" y2="0"/>
+              <path class="paper ink" d="M-21,-48 Q-24,-106 0,-108 Q24,-106 21,-48 Z" style="fill:var(--paper)"/>
+              <line class="ink" x1="0" y1="-104" x2="0" y2="-55" opacity=".5"/>
+              <path class="ink" d="M15,-95 L34,-100"/>
+              <circle class="ink" cx="0" cy="-126" r="16" style="fill:var(--paper)"/>
+              <g class="fill-ink"><circle cx="-14" cy="-136" r="7"/><circle cx="-4" cy="-143" r="7"/><circle cx="8" cy="-142" r="7"/><circle cx="16" cy="-133" r="6"/><circle cx="-18" cy="-124" r="6"/><circle cx="-16" cy="-112" r="5"/></g>
+              <circle class="ink" cx="-1" cy="-124" r="4" style="stroke-width:1.8"/><circle class="ink" cx="9" cy="-124" r="4" style="stroke-width:1.8"/>
+              <!-- magnifier -->
+              <line class="ink" x1="34" y1="-100" x2="48" y2="-114" style="stroke-width:4"/>
+              <circle class="ink" cx="60" cy="-126" r="15" style="fill:var(--soft);fill-opacity:.6"/>
+            </g>
+            <text class="cj-label" x="170" y="398">Curiosity</text>
+            <text class="cj-sub" x="170" y="417">Science · ML · diagnostics</text>
+          </g>
+
+          <!-- ============ Stage 2: the product builder ============ -->
+          <g class="stage s2">
+            <!-- blueprint board -->
+            <rect x="515" y="190" width="120" height="90" rx="6" class="soft"/>
+            <rect x="515" y="190" width="120" height="90" rx="6" class="ink" style="stroke-width:2"/>
+            <g class="accent" style="stroke-width:2;stroke-dasharray:5 5">
+              <rect x="535" y="215" width="55" height="40" rx="6"/><circle cx="562" cy="235" r="10"/>
+              <path d="M600,215 h20 M600,228 h14 M600,241 h18"/>
+            </g>
+            <line class="ink" x1="545" y1="280" x2="535" y2="330"/><line class="ink" x1="605" y1="280" x2="615" y2="327"/>
+            <g transform="translate(470,344) scale(.9)">
+              <line class="ink" x1="-8" y1="-50" x2="-11" y2="0"/><line class="ink" x1="8" y1="-50" x2="11" y2="0"/>
+              <path class="ink" d="M-21,-48 Q-24,-106 0,-108 Q24,-106 21,-48 Z" style="fill:var(--accent);fill-opacity:.25"/>
+              <path class="ink" d="M15,-95 L45,-118"/>
+              <path class="ink" d="M-15,-92 L-26,-62"/>
+              <circle class="ink" cx="0" cy="-126" r="16" style="fill:var(--paper)"/>
+              <g class="fill-ink"><circle cx="-14" cy="-136" r="7"/><circle cx="-4" cy="-143" r="7"/><circle cx="8" cy="-142" r="7"/><circle cx="16" cy="-133" r="6"/><circle cx="-18" cy="-124" r="6"/><circle cx="-16" cy="-112" r="5"/></g>
+              <circle class="ink" cx="-1" cy="-124" r="4" style="stroke-width:1.8"/><circle class="ink" cx="9" cy="-124" r="4" style="stroke-width:1.8"/>
+            </g>
+            <text class="cj-label" x="490" y="378">Building</text>
+            <text class="cj-sub" x="490" y="397">From research to a new product</text>
+          </g>
+
+          <!-- ============ Stage 3: the product manager ============ -->
+          <g class="stage s3">
+            <!-- lifecycle loop -->
+            <g transform="translate(850,205)">
+              <circle r="52" class="soft"/>
+              <path class="accent" d="M0,-46 A46,46 0 0 1 46,0"/><path class="accent" d="M40,-12 l6,12 l8,-10"/>
+              <path class="accent" d="M46,0 A46,46 0 0 1 0,46"/>
+              <path class="accent" d="M0,46 A46,46 0 0 1 -46,0"/><path class="accent" d="M-40,12 l-6,-12 l-8,10"/>
+              <path class="accent" d="M-46,0 A46,46 0 0 1 0,-46"/>
+              <!-- shipped product -->
+              <rect x="-20" y="-18" width="40" height="34" rx="4" class="paper"/>
+              <rect x="-20" y="-18" width="40" height="34" rx="4" class="ink" style="stroke-width:2"/>
+              <path class="ink" d="M-20,-8 h40" style="stroke-width:2"/>
+              <path class="accent" d="M-8,4 l6,6 l11,-12" style="stroke-width:3"/>
+            </g>
+            <g transform="translate(760,328)">
+              <line class="ink" x1="-8" y1="-50" x2="-11" y2="0"/><line class="ink" x1="8" y1="-50" x2="11" y2="0"/>
+              <path class="ink" d="M-21,-48 Q-24,-106 0,-108 Q24,-106 21,-48 Z" style="fill:var(--accent);fill-opacity:.55"/>
+              <path class="ink" d="M15,-95 L32,-80 L44,-92"/>
+              <path class="ink" d="M-15,-92 L-22,-62"/>
+              <circle class="ink" cx="0" cy="-126" r="16" style="fill:var(--paper)"/>
+              <g class="fill-ink"><circle cx="-14" cy="-136" r="7"/><circle cx="-4" cy="-143" r="7"/><circle cx="8" cy="-142" r="7"/><circle cx="16" cy="-133" r="6"/><circle cx="-18" cy="-124" r="6"/><circle cx="-16" cy="-112" r="5"/></g>
+              <circle class="ink" cx="-1" cy="-124" r="4" style="stroke-width:1.8"/><circle class="ink" cx="9" cy="-124" r="4" style="stroke-width:1.8"/>
+            </g>
+            <text class="cj-label" x="790" y="362">Delivering</text>
+            <text class="cj-sub" x="790" y="381">Regulated products, full lifecycle</text>
+          </g>
+
+          <!-- ============ Stage 4: lead PM, building with AI for impact ============ -->
+          <g class="stage s4">
+            <!-- AI network -->
+            <g class="accent" style="stroke-width:1.6;opacity:.8">
+              <path d="M1040,98 L1000,60 M1040,98 L1085,62 M1040,98 L1095,118 M1000,60 L1050,40 M1085,62 L1050,40 M1085,62 L1130,85 M1095,118 L1130,85 M1000,60 L975,105"/>
+            </g>
+            <circle class="fill-accent" cx="1000" cy="60" r="6"/><circle class="fill-accent" cx="1085" cy="62" r="6"/>
+            <circle class="fill-accent" cx="1050" cy="40" r="5"/><circle class="fill-accent" cx="1095" cy="118" r="5"/>
+            <circle class="fill-accent" cx="1130" cy="85" r="5"/><circle class="fill-accent" cx="975" cy="105" r="4"/>
+            <circle class="fill-accent pulse" cx="1040" cy="98" r="8"/>
+            <!-- impact: people + heart -->
+            <g transform="translate(1135,285)">
+              <circle cx="0" cy="-38" r="8" class="warm"/><path class="warm" d="M-11,0 q0,-24 11,-24 q11,0 11,24 z"/>
+              <circle cx="24" cy="-32" r="6.5" class="warm" opacity=".75"/><path class="warm" opacity=".75" d="M15,0 q0,-19 9,-19 q9,0 9,19 z"/>
+            </g>
+            <path class="warm pulse" d="M1160,200 c-6,-10 -22,-6 -18,6 c3,8 18,16 18,16 s15,-8 18,-16 c4,-12 -12,-16 -18,-6 z"/>
+            <g transform="translate(1040,300) scale(1.1)">
+              <line class="ink" x1="-8" y1="-50" x2="-11" y2="0"/><line class="ink" x1="8" y1="-50" x2="11" y2="0"/>
+              <path class="ink" d="M-21,-48 Q-24,-106 0,-108 Q24,-106 21,-48 Z" style="fill:var(--accent)"/>
+              <path class="ink" d="M15,-96 L32,-122"/><path class="ink" d="M-15,-96 L-32,-122"/>
+              <circle class="ink" cx="0" cy="-126" r="16" style="fill:var(--paper)"/>
+              <g class="fill-ink"><circle cx="-14" cy="-136" r="7"/><circle cx="-4" cy="-143" r="7"/><circle cx="8" cy="-142" r="7"/><circle cx="16" cy="-133" r="6"/><circle cx="-18" cy="-124" r="6"/><circle cx="-16" cy="-112" r="5"/></g>
+              <circle class="ink" cx="-1" cy="-124" r="4" style="stroke-width:1.8"/><circle class="ink" cx="9" cy="-124" r="4" style="stroke-width:1.8"/>
+              <path class="ink" d="M-3,-115 q4,3 8,0" style="stroke-width:1.8"/>
+            </g>
+            <text class="cj-label" x="1050" y="333">Impact</text>
+            <text class="cj-sub" x="1050" y="352">Leading · building with AI</text>
+          </g>
+        </svg>
+        <div class="journey-track">
+          <svg class="journey-path" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="journey-grad" gradientUnits="userSpaceOnUse">
+                <stop class="g-start" offset="0"/><stop class="g-mid" offset="0.25"/><stop class="g-end" offset="1"/>
+              </linearGradient>
+            </defs>
+            <path class="track"/>
+            <path class="fill"/>
+          </svg>
+          <ol class="journey" id="journey" aria-label="Career chapters"></ol>
         </div>
 
-        <!-- Newest first. Add class="now" to roles you currently hold. -->
-        <ol class="timeline">
-          <li class="now">
-            <div class="when">May 2026 – today</div>
-            <div class="what">
-              <h3>Lead Product Manager</h3>
-              <span class="org">expressTEC · Faro, Portugal · Part-time consultant</span>
-              <p>Leading a software-enabled, PCR-based molecular diagnostics platform for precision oncology. I own the product strategy, intended use and requirements for a cloud platform that gives clinicians biomarker interpretation and therapy-support insights, built within an IVDR-compliant design-control framework.</p>
-              <div class="tags"><span class="tag">Precision oncology</span><span class="tag">Cloud platform</span><span class="tag">IVDR</span><span class="tag">Product strategy</span></div>
-            </div>
-          </li>
-          <li class="now">
-            <div class="when">Mar 2025 – today</div>
-            <div class="what">
-              <h3>Product Manager</h3>
-              <span class="org">CLADE · Esslingen am Neckar, Germany</span>
-              <p>Own the roadmap and full lifecycle of integrated hardware/software GMP products for biopharmaceutical manufacturing, as product manager, product owner and project manager in one. Leading the design of a next-generation analytical platform, launched a new product while retiring the previous generation, and grew software feature output by more than 120% year on year.</p>
-              <div class="tags"><span class="tag">HW/SW products</span><span class="tag">GMP</span><span class="tag">Product ownership</span><span class="tag">Launch &amp; end-of-life</span></div>
-            </div>
-          </li>
-          <li>
-            <div class="when">Oct 2023 – Feb 2025</div>
-            <div class="what">
-              <h3>Product Manager</h3>
-              <span class="org">iLoF · Porto, Portugal</span>
-              <p>Led AI/ML-enabled diagnostic (IVD) products that combine photonics, machine learning and clinical data for early detection of Alzheimer's disease and cancer. Led data science and biology teams building the detection algorithms, and enabled the company's ISO 13485 certification and its regulatory strategy for software as an IVD.</p>
-              <div class="tags"><span class="tag">AI/ML diagnostics</span><span class="tag">Photonics</span><span class="tag">ISO 13485</span><span class="tag">Software as IVD</span></div>
-            </div>
-          </li>
-          <li>
-            <div class="when">Nov 2021 – Oct 2023</div>
-            <div class="what">
-              <h3>Postdoctoral Fellow in Chemistry</h3>
-              <span class="org">Lawrence Berkeley National Laboratory &amp; UC Berkeley · California</span>
-              <p>Developed optical spectroscopy instruments and computational analysis to uncover biomolecular dynamics in photosynthetic systems. Built Python and MATLAB pipelines with ML-supported analysis, and led projects through to first-author publications.</p>
-              <div class="tags"><span class="tag">Spectroscopy</span><span class="tag">Python &amp; MATLAB</span><span class="tag">Research leadership</span></div>
-            </div>
-          </li>
-          <li>
-            <div class="when">2017 – 2021</div>
-            <div class="what">
-              <h3>PhD in Physics, Dr. rer. nat.</h3>
-              <span class="org">Max Planck Institute of Quantum Optics &amp; LMU · Munich, Germany</span>
-              <p>Developed spectroscopy and machine-learning methods to detect disease from human blood, in the personalized-medicine research environment of Nobel laureate Prof. Ferenc Krausz. Built supervised and unsupervised models on data from a cohort of more than 4,000 people.</p>
-              <div class="tags"><span class="tag">Machine learning</span><span class="tag">Biomedical data</span><span class="tag">Personalized medicine</span></div>
-            </div>
-          </li>
-          <li>
-            <div class="when">2013 – 2015</div>
-            <div class="what">
-              <h3>MSc in Chemistry</h3>
-              <span class="org">Università degli Studi di Padova · Padua, Italy</span>
-              <p>Advanced spectroscopy and computational analysis of biomolecular dynamics.</p>
-            </div>
-          </li>
-        </ol>
-
-        <div class="pubs">
-          <span class="label">Selected publications</span>
-          <ul>
-            <li><cite>Plasma infrared fingerprinting with machine learning enables single-measurement multi-phenotype health screening.</cite><span>Cell Reports Medicine, 2024 · Second author</span></li>
-            <li><cite>Bidirectional energy flow in the photosystem II supercomplex.</cite><span>J. Phys. Chem. B, 2024 · First author</span></li>
-            <li><cite>Infrared signatures of phycobilins within the phycocyanin 645 complex.</cite><span>J. Phys. Chem. B, 2023 · First author</span></li>
-            <li><cite>Molecular origin of blood-based infrared spectroscopic fingerprints.</cite><span>Angewandte Chemie, 2021 · Second author, featured on the cover</span></li>
-          </ul>
+        <div class="journey-foot">
+          <span class="label">The full record: roles, dates and publications</span>
+          <a class="btn" href="Cristina_Leonardo_Resume.pdf" target="_blank" rel="noopener">Full CV (PDF) ↗</a>
         </div>
 
         <div class="principles">
@@ -459,7 +634,7 @@ footer .label i { font-family: var(--display); text-transform: none; letter-spac
       </div>
       <div class="block-body">
         <h2>Open to conversations about <em>AI products</em>.</h2>
-        <p class="intro">Product roles, advisory work, speaking, or comparing notes on building with AI. Reach out through any of these.</p>
+        <p class="intro">Product roles, advisory work, speaking, or comparing notes on building with AI.</p>
         <div class="contact-grid">
           <div class="contact-row">
             <span class="label">Email</span>
@@ -598,24 +773,33 @@ document.getElementById("copy-email").addEventListener("click", e => {
   const canvas = document.getElementById("network");
   const ctx = canvas.getContext("2d");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let w, h, nodes = [], colors = {};
+  let w = 0, h = 0, nodes = [], colors = {}, visible = true, running = false;
 
   function readColors() {
     const cs = getComputedStyle(document.documentElement);
     colors.green = cs.getPropertyValue("--green").trim();
     colors.violet = cs.getPropertyValue("--violet").trim();
   }
+  /* Phones fire resize while scrolling (the address bar shows and hides), so a resize
+     only rescales the existing nodes; they are seeded once. */
   function resize() {
+    const nw = canvas.clientWidth, nh = canvas.clientHeight;
+    if (!nw || !nh || (nw === w && nh === h)) return;
     const dpr = Math.min(devicePixelRatio || 1, 2);
-    w = canvas.clientWidth; h = canvas.clientHeight;
-    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.width = nw * dpr; canvas.height = nh * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = Math.round(Math.min(56, Math.max(18, w * h / 16000)));
-    nodes = Array.from({ length: count }, (_, i) => ({
-      x: Math.random() * w, y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.18, vy: (Math.random() - 0.5) * 0.18,
-      r: Math.random() * 1.6 + 1.2, v: i % 5 === 0
-    }));
+    if (!nodes.length) {
+      const count = Math.round(Math.min(56, Math.max(18, nw * nh / 16000)));
+      nodes = Array.from({ length: count }, (_, i) => ({
+        x: Math.random() * nw, y: Math.random() * nh,
+        vx: (Math.random() - 0.5) * 0.18, vy: (Math.random() - 0.5) * 0.18,
+        r: Math.random() * 1.6 + 1.2, v: i % 5 === 0
+      }));
+    } else {
+      for (const p of nodes) { p.x *= nw / w; p.y *= nh / h; }
+    }
+    w = nw; h = nh;
+    draw();
   }
   function draw() {
     ctx.clearRect(0, 0, w, h);
@@ -639,22 +823,37 @@ document.getElementById("copy-email").addEventListener("click", e => {
     }
     ctx.globalAlpha = 1;
   }
-  function step() {
+  /* Fixed speed per second, so the drift looks the same on 60 Hz and 120 Hz screens. */
+  let last = 0;
+  function step(t) {
+    const dt = last ? Math.min((t - last) / 16.7, 3) : 1;
+    last = t;
     for (const p of nodes) {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > w) p.vx *= -1;
-      if (p.y < 0 || p.y > h) p.vy *= -1;
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      if (p.x < 0) { p.x = 0; p.vx = Math.abs(p.vx); }
+      if (p.x > w) { p.x = w; p.vx = -Math.abs(p.vx); }
+      if (p.y < 0) { p.y = 0; p.vy = Math.abs(p.vy); }
+      if (p.y > h) { p.y = h; p.vy = -Math.abs(p.vy); }
     }
     draw();
+    if (visible) requestAnimationFrame(step); else running = false;
+  }
+  function start() {
+    if (reduce || running || !visible) return;
+    running = true; last = 0;
     requestAnimationFrame(step);
   }
   readColors(); resize();
-  addEventListener("resize", () => { resize(); if (reduce) draw(); });
+  new ResizeObserver(resize).observe(canvas);
+  /* Only animate while the hero is on screen. */
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; start(); }).observe(canvas);
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { readColors(); if (reduce) draw(); });
   new MutationObserver(() => { readColors(); if (reduce) draw(); })
     .observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  reduce ? draw() : step();
+  reduce ? draw() : start();
 })();
 </script>
+<script src="assets/career-data.js"></script>
+<script src="assets/journey.js"></script>
 </body>
 </html>
