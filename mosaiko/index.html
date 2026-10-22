@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mosaiko Build Diary</title>
+<meta name="description" content="Build diary of Mosaiko, a daily vocabulary app for learning five languages side by side, vibecoded by Cristina Leonardo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Tokens and base styles are copied from ../index.html; keep the two in sync. */
+:root {
+  --paper: #f6f7f4;
+  --surface: #ffffff;
+  --ink: #18221d;
+  --muted: #5d6a63;
+  --line: #dde2dc;
+  --green: #2f6b4f;
+  --green-soft: #e3eee7;
+  --violet: #6a4c9c;
+  --violet-soft: #ece6f5;
+
+  /* Mosaiko's language colours, from the app's globals.css */
+  --lang-it: #5a8a50;
+  --lang-es: #e08c45;
+  --lang-pt: #c0473b;
+  --lang-en: #4a6fa5;
+  --lang-de: #2a2420;
+
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.75rem;
+  --step-3: clamp(2.25rem, 5vw, 3.25rem);
+  --step-4: clamp(3rem, 9vw, 6.5rem);
+
+  --wrap: 72rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1512; --surface: #151d19; --ink: #e8ece8; --muted: #9aa8a0; --line: #26312b;
+    --green: #8cc4a3; --green-soft: #1a2a22; --violet: #b9a2e6; --violet-soft: #231d30;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1512; --surface: #151d19; --ink: #e8ece8; --muted: #9aa8a0; --line: #26312b;
+  --green: #8cc4a3; --green-soft: #1a2a22; --violet: #b9a2e6; --violet-soft: #231d30;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--violet-soft); color: var(--ink); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; border-radius: 2px; }
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 720px) {
+  .wrap { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); }
+}
+
+.label {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------- Header ---------- */
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper);
+}
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .wrap {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding-block: 14px;
+}
+.monogram {
+  font-family: var(--display); font-size: 1.35rem; font-weight: 500;
+  text-decoration: none; letter-spacing: -0.01em;
+}
+.monogram i { color: var(--violet); }
+.site-nav { display: flex; gap: clamp(14px, 3vw, 32px); }
+.site-nav a {
+  font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.06em;
+  text-transform: uppercase; text-decoration: none; color: var(--muted);
+  transition: color .2s;
+}
+.site-nav a:hover { color: var(--ink); }
+
+.btn {
+  font-size: var(--step--1); font-weight: 600; letter-spacing: 0.02em; text-decoration: none;
+  padding: 11px 22px; border-radius: 99px; border: 1px solid var(--line);
+  background: var(--paper); color: var(--ink);
+  transition: border-color .2s, background .2s, color .2s;
+}
+.btn:hover { border-color: var(--violet); color: var(--violet); }
+.btn.primary { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.btn.primary:hover { background: var(--violet); border-color: var(--violet); color: var(--paper); }
+
+/* ---------- Diary hero ---------- */
+.hero { border-bottom: 1px solid var(--line); }
+.hero .wrap {
+  padding-block: clamp(56px, 10vw, 120px) clamp(48px, 8vw, 96px);
+  display: grid; gap: 28px;
+}
+.hero-text { display: grid; gap: 24px; min-width: 0; max-width: 46rem; }
+.hero h1 {
+  margin: 0; font-family: var(--display); font-weight: 400;
+  font-size: var(--step-4); line-height: 0.95; letter-spacing: -0.03em;
+}
+.hero h1 em { color: var(--violet); }
+.lede { margin: 0; max-width: 56ch; font-size: var(--step-1); line-height: 1.5; color: var(--muted); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.cover {
+  margin: 0 0 8px; display: grid; place-items: center;
+  aspect-ratio: 16 / 7; border: 1px solid var(--line); border-radius: 6px;
+  background:
+    radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--lang-it) 14%, transparent), transparent 45%),
+    radial-gradient(circle at 80% 70%, color-mix(in srgb, var(--lang-en) 14%, transparent), transparent 45%),
+    var(--surface);
+}
+.logo { width: clamp(96px, 26%, 11rem); height: auto; }
+.logo .bubble { fill: var(--surface); stroke: var(--ink); }
+.logo .tile { stroke: var(--ink); }
+
+/* ---------- Posts ---------- */
+.toc { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.toc li { border-bottom: 1px solid var(--line); }
+.toc a {
+  display: grid; gap: 2px 24px; padding-block: 14px; text-decoration: none;
+}
+@media (min-width: 640px) { .toc a { grid-template-columns: 9rem minmax(0, 1fr); align-items: baseline; } }
+.toc .t { font-family: var(--display); font-size: var(--step-1); transition: color .2s; }
+.toc a:hover .t { color: var(--violet); }
+
+.post { border-bottom: 1px solid var(--line); scroll-margin-top: 64px; }
+.post > .wrap {
+  padding-block: clamp(56px, 9vw, 104px);
+  display: grid; gap: 24px;
+}
+@media (min-width: 900px) {
+  .post > .wrap { grid-template-columns: 13rem minmax(0, 1fr); gap: 48px; }
+}
+.post-meta { display: grid; gap: 10px; align-content: start; }
+@media (min-width: 900px) { .post-meta { position: sticky; top: 96px; } }
+.tiles { display: flex; gap: 4px; }
+.tiles i { width: 14px; height: 14px; border-radius: 3px; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 25%, transparent); }
+.post-body { min-width: 0; max-width: 42rem; display: grid; gap: 20px; }
+.post-body h2 {
+  margin: 0; font-family: var(--display); font-weight: 400;
+  font-size: var(--step-3); line-height: 1.08; letter-spacing: -0.02em; text-wrap: balance;
+}
+.post-body .dek { margin: 0; font-size: var(--step-1); line-height: 1.5; color: var(--muted); }
+.post-body p { margin: 0; }
+.post-body h3 { margin: 16px 0 0; font-family: var(--display); font-weight: 500; font-size: var(--step-2); line-height: 1.2; }
+.post-body strong { font-weight: 600; }
+.post-body ul { margin: 0; padding-left: 1.25em; display: grid; gap: 10px; }
+.post-body ul li::marker { color: var(--violet); }
+.post-body p a { color: var(--green); font-weight: 600; text-decoration: none; border-bottom: 1px solid currentColor; overflow-wrap: anywhere; }
+.post-body p a:hover { color: var(--violet); }
+.post-body .outro { font-family: var(--display); font-style: italic; font-size: var(--step-1); color: var(--muted); }
+.learned {
+  margin: 8px 0 0; padding: 20px 24px; border-radius: 6px;
+  background: var(--violet-soft); border-left: 3px solid var(--violet);
+}
+.learned .label { display: block; margin-bottom: 6px; color: var(--violet); }
+.learned p { font-family: var(--display); font-style: italic; font-size: 1.15rem; line-height: 1.5; }
+.permalink { font-size: var(--step--1); color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); justify-self: start; }
+.permalink:hover { color: var(--violet); border-color: var(--violet); }
+
+footer .wrap {
+  padding-block: 40px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+}
+footer .label i { font-family: var(--display); text-transform: none; letter-spacing: 0; font-size: 0.95rem; color: var(--violet); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="monogram" href="../">C<i>L</i></a>
+    <nav class="site-nav" aria-label="Sections">
+      <a href="../#projects">Projects</a>
+      <a href="https://mosaiko-language-app.vercel.app" target="_blank" rel="noopener">The app ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <span class="label">Build diary · Side project</span>
+        <h1>Mosaiko, <em>tile</em> by tile.</h1>
+        <p class="lede">Notes from building Mosaiko, a daily vocabulary app for learning five languages side by side. I'm building it with AI coding tools, and I write here about what I tried, what I chose and what I learned.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="https://mosaiko-language-app.vercel.app" target="_blank" rel="noopener">Try the app ↗</a>
+          <a class="btn" href="#posts">Read the diary</a>
+        </div>
+        <ol class="toc" id="toc" aria-label="All posts"></ol>
+      </div>
+    </div>
+  </section>
+
+  <div id="posts"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="label">© <span id="year">2026</span> Cristina Leonardo, Dr. rer. nat.</span>
+    <span class="label">Vibecoded with <i>Claude Code</i></span>
+  </div>
+</footer>
+
+<script src="posts.js"></script>
+<script>
+const LANGS = ["it", "es", "pt", "en", "de"];
+
+// The Mosaiko logo, redrawn from the app's components/Logo.tsx
+const LOGO = `
+  <svg class="logo" viewBox="0 0 120 112" role="img" aria-label="Mosaiko logo">
+    <path class="bubble" d="M24 6h72a18 18 0 0 1 18 18v42a18 18 0 0 1-18 18H46L31 98V84h-7A18 18 0 0 1 6 66V24A18 18 0 0 1 24 6z" stroke-width="5" stroke-linejoin="round"/>
+    <rect class="tile" x="16" y="17" width="26" height="26" rx="5" style="fill: var(--lang-it)" stroke-width="3.5"/>
+    <rect class="tile" x="47" y="17" width="26" height="26" rx="5" style="fill: var(--lang-es)" stroke-width="3.5"/>
+    <rect class="tile" x="78" y="17" width="26" height="26" rx="5" style="fill: var(--lang-pt)" stroke-width="3.5"/>
+    <rect class="tile" x="16" y="48" width="41" height="26" rx="5" style="fill: var(--lang-de)" stroke-width="3.5"/>
+    <rect class="tile" x="62" y="48" width="42" height="26" rx="5" style="fill: var(--lang-en)" stroke-width="3.5"/>
+  </svg>`;
+
+function renderBlock(b) {
+  if (typeof b === "string") return `<p>${esc(b)}</p>`;
+  if (b.h) return `<h3>${esc(b.h)}</h3>`;
+  if (b.list) return `<ul>${b.list.map(item => `<li>${esc(item)}</li>`).join("")}</ul>`;
+  if (b.lead) return `<p><strong>${esc(b.lead)}</strong> ${esc(b.text)}</p>`;
+  if (b.link) return `<p>${esc(b.text)} <a href="${esc(b.link.href)}" target="_blank" rel="noopener">${esc(b.link.label)} ↗</a></p>`;
+  return "";
+}
+
+function blockText(b) {
+  return typeof b === "string" ? b : [b.h, b.lead, b.text, ...(b.list || [])].filter(Boolean).join(" ");
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function formatDate(iso) {
+  return new Date(iso + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+}
+
+function readingTime(post) {
+  const words = [post.dek, ...post.body.map(blockText), post.learned || ""].join(" ").split(/\s+/).length;
+  return `${Math.max(1, Math.round(words / 220))} min read`;
+}
+
+document.getElementById("toc").innerHTML = POSTS.map(p => `
+  <li><a href="#${esc(p.id)}"><span class="label">${esc(formatDate(p.date))}</span><span class="t">${esc(p.title)}</span></a></li>`).join("");
+
+document.getElementById("posts").innerHTML = POSTS.map((p, i) => `
+  <article class="post" id="${esc(p.id)}">
+    <div class="wrap">
+      <div class="post-meta">
+        <span class="label">Entry ${String(POSTS.length - i).padStart(2, "0")}</span>
+        <span class="label">${esc(formatDate(p.date))} · ${esc(readingTime(p))}</span>
+        <span class="tiles" aria-hidden="true">${LANGS.map(l => `<i style="background: var(--lang-${l})"></i>`).join("")}</span>
+      </div>
+      <div class="post-body">
+        ${p.cover === "logo" ? `<figure class="cover">${LOGO}</figure>` : ""}
+        <h2>${esc(p.title)}</h2>
+        <p class="dek">${esc(p.dek)}</p>
+        ${p.body.map(renderBlock).join("")}
+        ${p.learned ? `<aside class="learned"><span class="label">What I learned</span><p>${esc(p.learned)}</p></aside>` : ""}
+        ${p.outro ? `<p class="outro">${esc(p.outro)}</p>` : ""}
+        <a class="permalink" href="#${esc(p.id)}">Link to this entry</a>
+      </div>
+    </div>
+  </article>`).join("");
+
+// Content is rendered after load, so jump to a shared #entry link by hand.
+if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView();
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

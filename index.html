@@ -681,6 +681,17 @@ footer .label i { font-family: var(--display); text-transform: none; letter-spac
    ===================================================================== */
 const PROJECTS = [
   {
+    title: "Mosaiko",
+    status: "wip",
+    year: 2026,
+    category: "App",
+    summary: "A daily vocabulary app: three related words a day in Italian, Spanish, European Portuguese, English and German, with natural audio. The first MVP is live, and I keep a build diary as it grows.",
+    builtWith: "Claude Code",
+    stack: "Next.js · TypeScript · Tailwind · Google TTS",
+    time: "1 session so far",
+    links: [{ label: "Try the app", href: "https://mosaiko-language-app.vercel.app" }, { label: "Build diary", href: "mosaiko/" }]
+  },
+  {
     title: "This portfolio",
     status: "live",
     year: 2026,
@@ -700,7 +711,7 @@ const PROJECTS = [
   //   builtWith: "Claude Code",
   //   stack: "Python · FastAPI · Claude API",
   //   time: "2 weekends",
-  //   links: [{ label: "Live demo", href: "https://..." }, { label: "Code", href: "https://github.com/..." }]
+  //   links: [{ label: "Live demo", href: "https://..." }, { label: "Code", href: "https://github.com/..." }]  // relative hrefs open in the same tab
   // },
 ];
 
@@ -727,7 +738,7 @@ function renderProjects(filter) {
         <dt>Stack</dt><dd>${esc(p.stack)}</dd>
         <dt>Build time</dt><dd>${esc(p.time)}</dd>
       </dl>
-      ${p.links && p.links.length ? `<div class="project-links">${p.links.map(l => `<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}</div>` : ""}
+      ${p.links && p.links.length ? `<div class="project-links">${p.links.map(l => /^https?:/.test(l.href) ? `<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>` : `<a href="${esc(l.href)}">${esc(l.label)} →</a>`).join("")}</div>` : ""}
     </article>`).join("") + `
     <article class="project slot">
       <span class="label">Next experiment</span>
